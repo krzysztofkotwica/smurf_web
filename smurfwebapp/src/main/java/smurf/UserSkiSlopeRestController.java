@@ -8,58 +8,28 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
-import com.google.maps.GeoApiContext;
-import com.google.maps.GeocodingApi;
-import com.google.maps.errors.ApiException;
-import com.google.maps.model.GeocodingResult;
-import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/rest/ski_slopes")
+@RequestMapping("/rest/favourite")
 
-public class SkiSlopeRestController {
+public class UserSkiSlopeRestController {
 
-	private final SkiSlopeRepository skiSlopeRepository;
-	private final String API_KEY = "AIzaSyBg-IweUaRNn2s2iJny5Qd7Ep7nKdFoBUQ";
+	private final UserSkiSlopeRepository userSkiSlopeRepository;
 
 	@Autowired
-	SkiSlopeRestController(SkiSlopeRepository skiSlopeRepository) {
-		this.skiSlopeRepository = skiSlopeRepository;
+	UserSkiSlopeRestController(UserSkiSlopeRepository userSkiSlopeRepository) {
+		this.userSkiSlopeRepository = userSkiSlopeRepository;
 	}
 
-	@RequestMapping(method = RequestMethod.GET)
-	List<SkiSlope> readSkiSlope() {
-		List<SkiSlope> skislopes = this.skiSlopeRepository.findAll();
+	@RequestMapping(method = RequestMethod.GET, value = "/{userId}")
+	List<SkiSlope> favouritSkiSlopes(@PathVariable Long userId) {
+		List<SkiSlope> skislopes = this.userSkiSlopeRepository.findSkiSlopeByUserId(userId);
 		return this.addWeatherForList(skislopes);
 	}
-
-	@RequestMapping(method = RequestMethod.GET, value = "/slope/{slopeId}")
-	SkiSlope getSkiSlope(@PathVariable Long slopeId) {
-		SkiSlope skislope = this.skiSlopeRepository.findOne(slopeId);
-		return this.addWeather(skislope);
-	}
-
-	@RequestMapping(method = RequestMethod.GET, value = "/{address}")
-	List<SkiSlope> nearestSkiSlopes(@PathVariable String address) {
-		GeocodingResult geocode = this.getLongLat(address);
-		List<SkiSlope> skislopes = this.skiSlopeRepository.findByLatitudeAndLongitude(geocode.geometry.location.lat,
-				geocode.geometry.location.lng);
-		this.addWeatherForList(skislopes);
-		return skislopes;
-	}
-
-	private GeocodingResult getLongLat(String address) {
-		try {
-			GeoApiContext context = new GeoApiContext().setApiKey(this.API_KEY);
-			GeocodingResult[] results = GeocodingApi.geocode(context, address).await();
-			return results[0];
-		} catch (ApiException | InterruptedException | IOException e) {
-			return null;
-		}
-	}
-
+	
 	private List<SkiSlope> addWeatherForList(List<SkiSlope> skislopes) {
 		List <SkiSlope> returningList = new ArrayList<SkiSlope>();
 		for (int i=0; i < skislopes.size(); i++) {
@@ -91,5 +61,4 @@ public class SkiSlopeRestController {
 		}
 
 	}
-
 }

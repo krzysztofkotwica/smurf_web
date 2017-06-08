@@ -20,13 +20,12 @@ public class SkiSlope {
 	@JsonIgnore
 	private String title;
 	private String content;
-	private String latitude;
-	private String longitude;
+	private double latitude;
+	private double longitude;
 	private String address;
 	private String country;
 	private String image_url;
 	private String temperature;
-	private Boolean is_favourite;
 
 	public String getTitle() {
 		return title;
@@ -44,19 +43,19 @@ public class SkiSlope {
 		this.content = content;
 	}
 
-	public String getLatitude() {
+	public double getLatitude() {
 		return latitude;
 	}
 
-	public void setLatitude(String latitude) {
+	public void setLatitude(double latitude) {
 		this.latitude = latitude;
 	}
 
-	public String getLongitude() {
+	public double getLongitude() {
 		return longitude;
 	}
 
-	public void setLongitude(String longitude) {
+	public void setLongitude(double longitude) {
 		this.longitude = longitude;
 	}
 
@@ -90,14 +89,6 @@ public class SkiSlope {
 
 	public void setTemperature(String temperature) {
 		this.temperature = temperature;
-	}
-
-	public Boolean getIs_favourite() {
-		return is_favourite;
-	}
-
-	public void setIs_favourite(Boolean is_favourite) {
-		this.is_favourite = is_favourite;
 	}
 
 	SkiSlope() {
