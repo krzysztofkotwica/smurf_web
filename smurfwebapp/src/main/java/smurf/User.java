@@ -17,7 +17,6 @@ public class User {
 		return id;
 	}
 
-	@JsonIgnore
 	private String username;
 	private String email;
 	private String password;

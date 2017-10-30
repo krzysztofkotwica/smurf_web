@@ -17,7 +17,6 @@ public class SkiSlope {
 		return id;
 	}
 
-	@JsonIgnore
 	private String title;
 	private String content;
 	private double latitude;

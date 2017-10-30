@@ -17,8 +17,7 @@ public class UserSkiSlope {
 	public User getUser() {
 		return user;
 	}
-	
-	@JsonIgnore
+
 	@OneToOne()
 	private SkiSlope skiSlope;
 	
